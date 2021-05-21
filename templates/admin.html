@@ -20,7 +20,7 @@
         placeholder="semester"
         name="semester"
         list="subject"
-      />
+      /><br>
       <input type="text" placeholder="subject" name="subject" list="courses" />
       <datalist id="courses">
         {% for s in courses %}
@@ -28,6 +28,16 @@
         {% endfor %}
       </datalist>
       <input type="text" placeholder="grade" name="grade" /><br />
+
+      <input type="text" placeholder="subject" name="subject" list="courses" />
+      <datalist id="courses">
+        {% for s in courses %}
+        <option value="{{s.title}}">{{s.title}}</option>
+        {% endfor %}
+      </datalist>
+      <input type="text" placeholder="grade" name="grade" /><br />
+
+      
       <button type="submit">Save</button>
     </form>
   </body>

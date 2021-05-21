@@ -8,7 +8,7 @@ from .models import Result, Course
 
 @login_required
 def index(request):
-    results = Result.objects.filter(rollno=request.user)
+    results = Result.objects.filter(student=request.user)
     context = {"results": results}
     return render(request, "index.html", context)
 
@@ -36,12 +36,18 @@ def create_student(request):
 def marks(request):
     if request.method == 'POST':
         rollno = request.POST.get('rollno')
-        subject = request.POST.get("subject")
         semester = request.POST.get("semester")
-        grade = request.POST.get("grade")
+        subjects = request.POST.getlist("subject")
+        grades = request.POST.getlist("grade")
+        l = len(grades)
+        student = User.objects.get(username=rollno)
+        for i in range(l):
+            subject =  subjects[i]
+            grade = grades[i]
+            course = Course.objects.get(title__iexact=subject)
+            mark = Result(student=student, subject=course,
+                          semester=semester, grade=grade)
+            mark.save()
 
-        mark = Result(username=rollno, subject=subject,semester=semester,grade=grade)
-        mark.save()
-
-    context = {"courses": Course.objects.all(), "student": User.objects.all()}
+    context = {"courses": Course.objects.all(), "student": User.objects.filter(is_superuser=False)}
     return render(request, 'admin.html', context)

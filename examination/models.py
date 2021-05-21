@@ -6,13 +6,11 @@ class Course(models.Model):
     code = models.CharField(max_length=30)
 
     def __str__(self):
-        self.title 
+        return self.title
+    
 
 class Result(models.Model):
-    rollno = models.ForeignKey(User, on_delete=models.CASCADE)
+    student = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.ForeignKey(Course, on_delete=models.CASCADE)
     semester = models.CharField(max_length=30)
-    grade = models.CharField(max_length=30)
-
-    def __str__(self):
-        self.rollno
+    grade = models.CharField(max_length=1)
