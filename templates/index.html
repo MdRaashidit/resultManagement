@@ -9,5 +9,10 @@
   </head>
   <body>
     <h1>Roll Num: {{user.username}} Name: {{user.first_name}} Email: {{user.email}}</h1>
+    {% for r in results %}  
+    <p>Subject: {{r.subject.title}}</p>
+    <p>Grade: {{r.grade}}</p>
+    <p>semester : {{r.semester}}</p>
+    {% endfor %}
   </body>
 </html>

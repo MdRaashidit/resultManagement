@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="rollno" placeholder="rollno" list="student" />
+      <datalist id="student">
+        {% for s in student %}
+        <option value="{{s.username}}">{{s.username}}</option>
+        {% endfor %}
+      </datalist>
+      <input
+        type="text"
+        placeholder="semester"
+        name="semester"
+        list="subject"
+      />
+      <input type="text" placeholder="subject" name="subject" list="courses" />
+      <datalist id="courses">
+        {% for s in courses %}
+        <option value="{{s.title}}">{{s.title}}</option>
+        {% endfor %}
+      </datalist>
+      <input type="text" placeholder="grade" name="grade" /><br />
+      <button type="submit">Save</button>
+    </form>
+  </body>
+</html>

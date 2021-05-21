@@ -3,10 +3,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from .models import Result, Course
+
 
 @login_required
 def index(request):
-    return render(request, "index.html")
+    results = Result.objects.filter(rollno=request.user)
+    context = {"results": results}
+    return render(request, "index.html", context)
 
 
 def create_student(request):
@@ -29,3 +33,15 @@ def create_student(request):
     return render(request, 'signup.html')
 
 
+def marks(request):
+    if request.method == 'POST':
+        rollno = request.POST.get('rollno')
+        subject = request.POST.get("subject")
+        semester = request.POST.get("semester")
+        grade = request.POST.get("grade")
+
+        mark = Result(username=rollno, subject=subject,semester=semester,grade=grade)
+        mark.save()
+
+    context = {"courses": Course.objects.all(), "student": User.objects.all()}
+    return render(request, 'admin.html', context)
