@@ -6,10 +6,7 @@ from django.urls import path,include
 urlpatterns = [
     
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
-    path('',include('examination.urls')),
-=======
     path('', index, name='index'),
     path('signup', create_student, name='signup'),
->>>>>>> 575b1f7 (Signup)
+    path('accounts/', include('django.contrib.auth.urls')),
 ]

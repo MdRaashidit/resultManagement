@@ -1,13 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 
-
-<<<<<<< HEAD
-def home(request):
-    return render
-=======
+@login_required
 def index(request):
     return render(request, "index.html")
 
@@ -28,12 +25,7 @@ def create_student(request):
             last_name=last_name,
         )
         user.save()
+        return redirect('index')
     return render(request, 'signup.html')
 
 
-# def login_user(request):
-#     rollno = request.POST.get("rollno")
-#     password = request.POST.get("password")
-#     user = authenticate(request, username=rollno, password=password)
-#     return render(request,'login.html')
->>>>>>> 575b1f7 (Signup)

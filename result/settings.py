@@ -55,11 +55,7 @@ ROOT_URLCONF = 'result.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': ['templates'],
-=======
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
->>>>>>> 575b1f7 (Signup)
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +119,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
