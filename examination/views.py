@@ -2,7 +2,6 @@ from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
 from .models import Result, Course
 
 
@@ -42,12 +41,22 @@ def marks(request):
         l = len(grades)
         student = User.objects.get(username=rollno)
         for i in range(l):
-            subject =  subjects[i]
+            subject = subjects[i]
             grade = grades[i]
             course = Course.objects.get(title__iexact=subject)
             mark = Result(student=student, subject=course,
                           semester=semester, grade=grade)
             mark.save()
 
-    context = {"courses": Course.objects.all(), "student": User.objects.filter(is_superuser=False)}
+    context = {"courses": Course.objects.all(
+    ), "student": User.objects.filter(is_superuser=False)}
     return render(request, 'admin.html', context)
+
+
+def semester(request):
+    context = {'sems': None}
+    if request.method == 'POST':
+        sem = request.POST.get('sem')
+        sems = Result.objects.filter(semester=sem, student=request.user)
+        context = {"sems": sems}
+    return render(request, "sem.html", context)
