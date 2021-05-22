@@ -1,18 +1,136 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
-   <a href="{% url 'logout' %}">Logout</a>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>RESULT</title>
+    <!-- core:css -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/core/core.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/fonts/feather-font/css/iconfont.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}"
+    />
+
+    <link rel="stylesheet" href="{% static 'assets/css/demo_2/style.css' %}" />
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
   </head>
+
   <body>
-    <h1>Roll Num: {{user.username}} Name: {{user.first_name}} Email: {{user.email}}</h1>
-    {% for r in results %}  
-    <p>Subject: {{r.subject.title}}</p>
-    <p>Grade: {{r.grade}}</p>
-    <p>semester : {{r.semester}}</p>
-    {% endfor %}
+    <div class="main-wrapper">
+      <!-- partial:../../partials/_sidebar.html -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <a href="" class="sidebar-brand">RESULT</a>
+          <div class="sidebar-toggler not-active">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="sidebar-body">{% include './nav.html' %}</div>
+      </nav>
+
+      <div class="page-wrapper">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar">
+          <a href="#" class="sidebar-toggler">
+            <i data-feather="menu"></i>
+          </a>
+          <div class="navbar-content"></div>
+        </nav>
+        <!-- partial -->
+
+        <div class="page-content">
+          <!-- 	<nav class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="#">Tables</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Data Table</li>
+					</ol>
+				</nav> -->
+
+          <div class="row">
+            <div class="col-md-12 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">Result</h6>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <input
+                      type="text"
+                      placeholder="semester"
+                      name="sem"
+                      list="semester"
+                    />
+                    <datalist id="semester">
+                      {% for s in semester %}
+                      <option value="{{s.value}}">{{s.value}}</option>
+                      {% endfor %}
+                    </datalist>
+                    <button type="submit">search</button>
+                  </form>
+                  <br />
+                  {% comment %}
+                  <a href="{% url 'csv-report-sale' %}" class="btn btn-primary">
+                    Download Excel Sheet
+                  </a>
+                  {% endcomment %}
+                  <br />
+                  <div class="table-responsive">
+                    <table id="dataTableExample" class="table">
+                      <thead>
+                        <tr>
+                          <th>COURSE</th>
+                          <th>GRADE</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for s in sems %}
+                        <tr>
+                          <td>{{s.subject.title}}</td>
+                          {% if s.grade.value == "F" %}
+                          <td style="color: red">{{ s.grade.value }}</td>
+                          {% else %}
+                          <td style="color: green">{{ s.grade.value }}</td>
+                          {% endif %}
+                        </tr>
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                    &nbsp; &nbsp;
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- partial:../../partials/_footer.html -->
+        <footer
+          class="
+            footer
+            d-flex
+            flex-column flex-md-row
+            align-items-center
+            justify-content-between
+          "
+        >
+          <p class="text-muted text-center text-md-left">
+            © 2021 RESULT
+          </p>
+        </footer>
+        <!-- partial -->
+      </div>
+    </div>
+    <script src="{% static 'assets/vendors/core/core.js' %}"></script>
+    <script src="{% static 'assets/vendors/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/template.js' %}"></script>
   </body>
 </html>

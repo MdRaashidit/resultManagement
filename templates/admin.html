@@ -1,44 +1,257 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>RESULT MANAGEMENT SYSTEM</title>
+    <!-- core:css -->
+    <link rel="stylesheet" href="{% static 'assets/vendors/core/core.css' %}" />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/fonts/feather-font/css/iconfont.css' %}"
+    />
+    <link
+      rel="stylesheet"
+      href="{% static 'assets/vendors/flag-icon-css/css/flag-icon.min.css' %}"
+    />
+
+    <link rel="stylesheet" href="{% static 'assets/css/demo_2/style.css' %}" />
+    <!-- End layout styles -->
+    <link rel="shortcut icon" href="{% static 'assets/images/favicon.ico' %}" />
+    <style>
+      .data-list {
+        width: 200px;
+        max-height: 450px;
+        overflow-y: scroll;
+        position: absolute;
+        background-color: #070d19 !important;
+        color: white !important;
+        z-index: 10000;
+      }
+
+      .data-list::-webkit-scrollbar {
+        width: 4px;
+      }
+
+      .data-list::-webkit-scrollbar-track {
+        background-color: #070d19;
+      }
+
+      .data-list::-webkit-scrollbar-thumb {
+        border-radius: 2px;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+
+      .option {
+        padding: 12px 20px;
+        list-style: none;
+        border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .option:hover {
+        background-color: rgba(255, 255, 255, 0.16);
+      }
+
+      #item-list {
+        display: none;
+      }
+    </style>
   </head>
+
   <body>
-    <form method="POST">
-      {% csrf_token %}
-      <input type="text" name="rollno" placeholder="rollno" list="student" />
-      <datalist id="student">
-        {% for s in student %}
-        <option value="{{s.username}}">{{s.username}}</option>
-        {% endfor %}
-      </datalist>
-      <input
-        type="text"
-        placeholder="semester"
-        name="semester"
-        list="subject"
-      /><br>
-      <input type="text" placeholder="subject" name="subject" list="courses" />
-      <datalist id="courses">
-        {% for s in courses %}
-        <option value="{{s.title}}">{{s.title}}</option>
-        {% endfor %}
-      </datalist>
-      <input type="text" placeholder="grade" name="grade" /><br />
+    <div class="main-wrapper">
+      <!-- partial:../../partials/_sidebar.html -->
+      <nav class="sidebar">
+        <div class="sidebar-header">
+          <a href="" class="sidebar-brand">RESULT</a>
+          <div class="sidebar-toggler not-active">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+        <div class="sidebar-body">{% include './nav.html' %}</div>
+      </nav>
 
-      <input type="text" placeholder="subject" name="subject" list="courses" />
-      <datalist id="courses">
-        {% for s in courses %}
-        <option value="{{s.title}}">{{s.title}}</option>
-        {% endfor %}
-      </datalist>
-      <input type="text" placeholder="grade" name="grade" /><br />
+      <div class="page-wrapper">
+        <!-- partial:../../partials/_navbar.html -->
+        <nav class="navbar">
+          <a href="#" class="sidebar-toggler">
+            <i data-feather="menu"></i>
+          </a>
+          <div class="navbar-content"></div>
+        </nav>
+        <!-- partial -->
 
-      
-      <button type="submit">Save</button>
-    </form>
+        <div style="position: relative" class="page-content">
+          <ul
+            style="padding-left: 0px"
+            ref="itemList"
+            id="item-list"
+            class="data-list"
+          >
+            <li class="option" style="cursor: pointer"></li>
+          </ul>
+          <div class="row">
+            <div class="col-md-12 stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h6 class="card-title">MARKS</h6>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="row">
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="control-label">Roll No.</label><br />
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            name="rollno"
+                            class="form-control"
+                            list="student"
+                            required=""
+                            style="font-size: 18px; font-weight: bold"
+                          />
+                          <datalist id="student">
+                            {% for s in student %}
+                            <option value="{{s.username}}">
+                              {{s.username}}
+                            </option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="form-group">
+                          <label class="control-label">Semester</label><br />
+                          <input
+                            autocomplete="off"
+                            type="text"
+                            name="semester"
+                            class="form-control"
+                            list="semester"
+                            required=""
+                            style="font-size: 18px; font-weight: bold"
+                          />
+                          <datalist id="semester">
+                            {% for s in semester %}
+                            <option value="{{s.value}}">
+                              {{s.value}}
+                            </option>
+                            {% endfor %}
+                          </datalist>
+                        </div>
+                      </div>
+                    </div>
+                    <table>
+                      <tr>
+                        <th>COURSE</th>
+                        <th>GRADE</th>
+                      </tr>
+                      <tr>
+                        <div class="row">
+                          <td>
+                            <div class="form-group">
+                              <input
+                                type="text"
+                                name="course"
+                                class="form-control"
+                                required
+                                style="font-size: 18px; width: 500px"
+                                list="courses"
+                              />
+                              <datalist id="courses">
+                                {% for s in courses %}
+                                <option value="{{s.title}}">{{s.title}}</option>
+                                {% endfor %}
+                              </datalist>
+                            </div>
+                          </td>
+
+                          <td>
+                            <div class="form-group">
+                              <input
+                                autocomplete="off"
+                                type="text"
+                                name="grade"
+                                class="form-control"
+                                list="grades"
+                                required=""
+                                style="
+                                  font-size: 18px;
+                                  font-weight: bold;
+                                  width: 500px;
+                                "
+                              />
+                              <datalist id="grades">
+                                {% for g in grades %}
+                                <option value="{{g.value}}">
+                                  {{g.value}}
+                                </option>
+                                {% endfor %}
+                              </datalist>
+                            </div>
+                          </td>
+                        </div>
+                        <!-- Row -->
+                      </tr>
+                    </table>
+                    <div class="row">
+                      <div class="col-sm-2">
+                        <div class="form-group">
+                          <label class="control-label">&nbsp;</label><br />
+                          <button
+                            type="button"
+                            class="btn btn-primary btn-icon"
+                          >
+                            <i data-feather="plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-success submit">
+                      Save
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% comment %}
+        <ul id="party-list" class="data-list">
+          {% for party in parties %}
+          <li style="cursor: pointer" class="party-option">{{ party.name }}</li>
+          {% endfor %}
+        </ul>
+        {% endcomment %}
+
+        <!-- partial:../../partials/_footer.html -->
+        <footer
+          class="
+            footer
+            d-flex
+            flex-column flex-md-row
+            align-items-center
+            justify-content-between
+          "
+        >
+          <p class="text-muted text-center text-md-left">
+            © 2021 RESULT . All rights reserved
+          </p>
+        </footer>
+        <!-- partial -->
+      </div>
+    </div>
+
+    <!-- core:js -->
+    <script src="{% static 'assets/vendors/core/core.js' %}"></script>
+    <script src="{% static 'assets/vendors/feather-icons/feather.min.js' %}"></script>
+    <script src="{% static 'assets/js/template.js' %}"></script>
   </body>
 </html>

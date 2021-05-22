@@ -1,0 +1,24 @@
+<ul class="nav">
+  
+  <li class="nav-item">
+    <a href="{% url 'index' %}" class="nav-link">
+      <i class="link-icon" data-feather="trending-up"></i>
+      <span class="link-title">Home</span>
+    </a>
+  </li>
+  {% if request.user.is_superuser %}
+  <li class="nav-item">
+    <a href="{% url 'marks' %}" class="nav-link">
+      <i class="link-icon" data-feather="check"></i>
+      <span class="link-title">Add Marks</span>
+    </a>
+  </li>
+  {% endif %}
+
+  <li class="nav-item">
+    <a href="{% url 'logout' %}" class="nav-link">
+      <i class="link-icon" data-feather="users"></i>
+      <span class="link-title">Logout</span>
+    </a>
+  </li>
+</ul>
