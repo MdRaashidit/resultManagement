@@ -123,7 +123,8 @@ if DEBUG:
     STATICFILES_DIRS = [(BASE_DIR / "static")]
 
 if not DEBUG:
-    STATIC_ROOT = "/static/"
+    STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 
 
 
