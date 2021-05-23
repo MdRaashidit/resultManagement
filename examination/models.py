@@ -28,4 +28,4 @@ class Result(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE)
     subject = models.ForeignKey(Course, on_delete=models.CASCADE)
     semester = models.ForeignKey(Semester,  on_delete=models.CASCADE)
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE, null=True, blank=True)

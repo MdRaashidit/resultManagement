@@ -1,11 +1,12 @@
 <ul class="nav">
-  
+   
   <li class="nav-item">
     <a href="{% url 'index' %}" class="nav-link">
       <i class="link-icon" data-feather="trending-up"></i>
       <span class="link-title">Home</span>
     </a>
   </li>
+
   {% if request.user.is_superuser %}
   <li class="nav-item">
     <a href="{% url 'marks' %}" class="nav-link">

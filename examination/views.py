@@ -1,3 +1,4 @@
+import pdb
 from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
@@ -46,8 +47,9 @@ def marks(request):
             subject = subjects[i]
             grade = Grade.objects.get(value=grades[i])
             course = Course.objects.get(title__iexact=subject)
-            mark = Result(student=student, subject=course,
-                          semester=semester, grade=grade)
+            mark, _ = Result.objects.get_or_create(student=student, subject=course,
+                          semester=semester)
+            mark.grade = Grade.objects.get(value=grade)
             mark.save()
 
     context = {"courses": Course.objects.all(), "student": User.objects.filter(
@@ -56,9 +58,19 @@ def marks(request):
 
 @login_required
 def semester(request):
-    sems = None
+    results = None
     if request.method == 'POST':
-        sem = Semester.objects.get(value=request.POST.get('sem'))
-        sems = Result.objects.filter(semester=sem, student=request.user)
-    context = {"sems": sems, "semester": Semester.objects.all()}
+        user = None
+        # TODO: if student -> rollno = request.user.username, query for sem
+        if request.user.is_superuser:
+            rollno = request.POST.get('rollno')
+            user = User.objects.get(username=rollno)
+        else:
+            # Student's case
+            rollno = request.user.username
+            user = request.user
+        sem_val = request.POST.get('sem')
+        sem = Semester.objects.get(value=sem_val)
+        results = Result.objects.filter(student=user, semester=sem)
+    context = {"sems": Semester.objects.all(), "results": results, "users": User.objects.filter(is_superuser=False)}
     return render(request, "index.html", context)

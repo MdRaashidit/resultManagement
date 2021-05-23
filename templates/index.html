@@ -62,7 +62,33 @@
                 <div class="card-body">
                   <h6 class="card-title">Result</h6>
                   <form method="POST">
-                    {% csrf_token %}
+                    {% csrf_token %} 
+                    {% if request.user.is_superuser %}
+                    <input
+                      type="text"
+                      placeholder="rollno"
+                      name="rollno"
+                      list="users"
+                    />
+                    <datalist id="users">
+                      {% for u in users%}
+                      <option value="{{u.username}}">{{u.username}}</option>
+                      {% endfor %}
+                    </datalist>
+                    {% endif %}
+                    <input
+                      type="text"
+                      placeholder="semester"
+                      name="sem"
+                      list="semester"
+                    />
+                    <datalist id="semester">
+                      {% for s in sems %}
+                      <option value="{{s.value}}">{{s.value}}</option>
+                      {% endfor %}
+                    </datalist>
+
+                    {% comment %} {% else %}
                     <input
                       type="text"
                       placeholder="semester"
@@ -74,6 +100,8 @@
                       <option value="{{s.value}}">{{s.value}}</option>
                       {% endfor %}
                     </datalist>
+                    {% endif %} {% endcomment %}
+
                     <button type="submit">search</button>
                   </form>
                   <br />
@@ -92,7 +120,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        {% for s in sems %}
+                        {% for s in results %}
                         <tr>
                           <td>{{s.subject.title}}</td>
                           {% if s.grade.value == "F" %}
@@ -122,9 +150,7 @@
             justify-content-between
           "
         >
-          <p class="text-muted text-center text-md-left">
-            © 2021 RESULT
-          </p>
+          <p class="text-muted text-center text-md-left">© 2021 RESULT</p>
         </footer>
         <!-- partial -->
       </div>
