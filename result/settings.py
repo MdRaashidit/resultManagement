@@ -123,7 +123,7 @@ if DEBUG:
     STATICFILES_DIRS = [str(BASE_DIR / "static")]
 
 if not DEBUG:
-    STATIC_ROOT = str(BASE_DIR / "static")
+    STATIC_ROOT = "/static/"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
