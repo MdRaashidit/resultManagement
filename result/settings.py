@@ -120,13 +120,12 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 if DEBUG:
-    STATICFILES_DIRS = [str(BASE_DIR / "static")]
+    STATICFILES_DIRS = [(BASE_DIR / "static")]
 
 if not DEBUG:
     STATIC_ROOT = "/static/"
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
